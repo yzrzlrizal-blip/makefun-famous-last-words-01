@@ -24,12 +24,14 @@ def main() -> None:
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR") or "/output"
     os.makedirs(out_dir, exist_ok=True)
     path = os.path.join(out_dir, "entry.txt")
-    with open(path, "w", encoding="utf-8") as fh:
-        fh.write(LINE)
-    with open(path, encoding="utf-8") as fh:
-        back = fh.read()
+    data = LINE.encode("utf-8")
+    with open(path, "wb") as fh:
+        fh.write(data)
+    with open(path, "rb") as fh:
+        back = fh.read().decode("utf-8")
     if back != LINE:
         raise SystemExit("round-trip mismatch")
+    print(f"wrote {len(LINE)} chars to {path}")
     print(LINE)
 
 
